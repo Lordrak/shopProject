@@ -4,7 +4,11 @@ var app = express();
 var url = 'mongodb://localhost:27017';
 var _client = "";
 
-MongoClient.connect(url, function(err, client) {
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+mongo.connect(url, function(err, client) {
 	console.log("Connected successfully to server");
 	_client = client;
 });
