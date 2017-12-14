@@ -1,20 +1,20 @@
 angular.module('Shop').controller('produitCtrl',function($scope,$http){
     
-    	$scope.ajoutProduit = "";
+    	$scope.ajoutProduit = ajoutProduit;
 
-         ajoutProduit();
+        
 
-    	 function ajoutProduit() {
+    	 function ajoutProduit(nom,prix,type,quantite) {
 
     		 var produit = {
-    		 	 nom : "poulet",
-    		 	 prix :"5€",
-    		 	 type : "frit",
-    		 	 quantite: 2
+    		 	 nom : nom,
+    		 	 prix :prix+'€',
+    		 	 type : type,
+    		 	 quantite: quantite
 
     		 };
-
-    		 $http.post('/addProduct', produit).then(function(res){
+    		 console.log(produit);
+    		 $http.post('http://localhost:3000/addProduct', produit).then(function(res){
     		 		console.log("produit ajouté");
     		 });
 
