@@ -1,5 +1,6 @@
 angular.module('Shop').component('user',{
    
-   template: "user"
+   template: "Ceci est notre user",
+   controller: "userCtrl"
 
 });
