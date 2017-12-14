@@ -14,7 +14,7 @@ angular.module('Shop').controller('produitCtrl',function($scope,$http){
 
     		 };
 
-    		 $http.post('/addProduct', produit).then(function(res){
+    		 $http.post('http://localhost:3000/addProduct', produit).then(function(res){
     		 		console.log("produit ajouté");
     		 });
 
