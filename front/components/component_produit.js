@@ -1,4 +1,4 @@
 angular.module('Shop').component('produit',{
-	templateUrl: "views/view_addProduit.html",
+	templateUrl: "views/view_produit.html",
 	controller: "produitCtrl"
 });
