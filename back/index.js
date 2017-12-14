@@ -65,6 +65,20 @@ app.post('/createUser', function(req, res) {
 	}
 });
 
+app.post('/login', function (req, res) {
+	var user = req.body;
+	var db = _client.db('Shop');
+	if (user.username && user.password) {
+		db.collection('Utilisateur').find({	$and: [ { username: user.username }, { password: user.password }]}).toArray(function (err, docs){
+			if (docs) { // si il existe
+				var token = {
+					token : user.username + Math.floor(Math.random() * 10000) + 1;
+					username : user.username;
+				}
+			}
+		}) 
+	}
+})
 
 app.listen(3000, function() {
 	console.log('Server ON');
