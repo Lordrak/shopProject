@@ -29,7 +29,6 @@ app.post('/addProduct', function(req, res) { // on utilise ici express avec app
 		var newProduct = {
 			nom : produit.nom,
 			prix : produit.prix,
-			quantite : produit.quantite,
 			type : produit.type
 		};
 		db.collection('Produit').save(newProduct); 
@@ -85,9 +84,7 @@ app.post('/login', function (req, res) {
 						db.collection('Token').save(token);
 						res.status(200).send(token.token);
 					}
-					
 				})
-				
 			}
 			else{
 				res.send("Mauvais utilisateur ou mot de passe");
@@ -97,7 +94,38 @@ app.post('/login', function (req, res) {
 	else {
 		res.status(412).send("il manque le pseudo ou le mot de passe de l'utilisateur");
 	}
-})
+});
+
+
+app.post('/addPanier/:token', function(req, res){
+	var token = req.params.token
+	var produit = req.body;
+	var db = _client.db('Shop');
+	db.collection('Token').find({token : token}).toArray(function(err, docs){
+		if(docs[0]){
+			var username = docs[0].username;
+			db.collection('Panier').find({username: username}).toArray(function(err, docs){
+				if(docs[0]){
+					var produits = docs[0].produits;
+					produits.push(produit);
+					db.collection('Panier').update( { "username": username},
+   													{ "produits":produits },
+   													{ upsert: true } );
+				}
+				else{
+					var produits = [produit];
+					var panier = {username: username, produits: produits};
+					db.collection('Panier').save(panier);
+					
+				}
+				res.status(200).send("Produit ajouté au panier");
+			});
+		}
+		else{
+			res.status(401).send("Pas autorisé");
+		}
+	});
+});
 
 app.listen(3000, function() {
 	console.log('Server ON');
