@@ -61,7 +61,7 @@ app.post('/createUser', function(req, res) {
 		res.status(200).send('Utilisateur crée');
 	}
 	else {
-		res.status(412).send("il manque le nom ou le mot de passe de l'utilisateur");
+		res.status(412).send("il manque le pseudo ou le mot de passe de l'utilisateur");
 	}
 });
 
@@ -71,12 +71,31 @@ app.post('/login', function (req, res) {
 	if (user.username && user.password) {
 		db.collection('Utilisateur').find({	$and: [ { username: user.username }, { password: user.password }]}).toArray(function (err, docs){
 			if (docs) { // si il existe
-				var token = {
-					token : user.username + Math.floor(Math.random() * 10000) + 1;
-					username : user.username;
-				}
+				db.collection('Token').find({username: user.username}).toArray(function(err, docs){
+					var token = "";
+					if(docs[0]){
+						token = docs[0].token;	
+						res.status(200).send(token+" Connecté");
+					}
+					else{
+						token = {
+							token :  user.username + Math.floor(Math.random() * 10000),
+							username : user.username
+						}
+						db.collection('Token').save(token);
+						res.status(200).send(token.token);
+					}
+					
+				})
+				
+			}
+			else{
+				res.send("Mauvais utilisateur ou mot de passe");
 			}
 		}) 
+	}
+	else {
+		res.status(412).send("il manque le pseudo ou le mot de passe de l'utilisateur");
 	}
 })
 
