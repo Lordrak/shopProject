@@ -54,7 +54,8 @@ app.post('/createUser', function(req, res) {
 			username: user.username,
 			password : user.password,
 			nom : user.nom,
-			prenom : user.prenom
+			prenom : user.prenom,
+			panier : []
 		};
 		db.collection('Utilisateur').save(newUser);
 		res.status(200).send('Utilisateur crée');
@@ -104,21 +105,21 @@ app.post('/addPanier/:token', function(req, res){
 	db.collection('Token').find({token : token}).toArray(function(err, docs){
 		if(docs[0]){
 			var username = docs[0].username;
-			db.collection('Panier').find({username: username}).toArray(function(err, docs){
+			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
 				if(docs[0]){
-					var produits = docs[0].produits;
-					produits.push(produit);
-					db.collection('Panier').update( { "username": username},
-   													{ "produits":produits },
+					var panier = docs[0].panier;
+					panier.push(produit);
+					db.collection('Utilisateur').update( { "username": username},
+   													{
+   														"username" : docs[0].username,
+   														"password" : docs[0].password,
+   														"nom" : docs[0].nom,
+   														"prenom" : docs[0].prenom, 
+   														"panier":panier
+   													},
    													{ upsert: true } );
+					res.status(200).send(produit+" ajouté au panier");
 				}
-				else{
-					var produits = [produit];
-					var panier = {username: username, produits: produits};
-					db.collection('Panier').save(panier);
-					
-				}
-				res.status(200).send("Produit ajouté au panier");
 			});
 		}
 		else{
