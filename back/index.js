@@ -207,6 +207,7 @@ app.post('/addPanier/:token', function(req, res){
  			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
  				if(docs[0]){
  					var panier = docs[0].panier;
+ 					docs[0].achats.concat(panier);
  					db.collection('Utilisateur').update( { "username": username},
    													{
    														"username" : docs[0].username,
@@ -214,7 +215,7 @@ app.post('/addPanier/:token', function(req, res){
    														"nom" : docs[0].nom,
    														"prenom" : docs[0].prenom, 
    														"panier":[],
-   														"achats": panier
+   														"achats": docs[0].achats
    													},
    													{ upsert: true } );
 					res.status(200).send("produits achetés");
