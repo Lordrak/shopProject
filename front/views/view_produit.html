@@ -1,9 +1,21 @@
 <div ng-repeat="element in produits">
 
-	<p>{{element.nom}}</p>
+   <form ng-submit="addProduitPanier(element)">
+
+   	 <input type="text" ng-model="quantite">
+   	 
+
+
+   
+
+    <p>{{element.nom}}</p>
 	<p>{{element.prix}}</p>
 	<p>{{element.type}}</p>
 	<p>{{element.quantite}}</p>
-<button ng-click="addProduitPanier(element)">AjoutPanier</button>
+
+<button type="submit">AjoutPanier</button>
+
+ </form>
+
 	<hr/>
 </div>

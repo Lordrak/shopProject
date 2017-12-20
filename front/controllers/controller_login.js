@@ -1,4 +1,4 @@
-angular.module('Shop').controller('loginCtrl', function($scope, $http) {
+angular.module('Shop').controller('loginCtrl', function($scope, $http,$state) {
 	$scope.panier = [];
 	$scope.token = "";
 	$scope.connect = function() {
@@ -12,12 +12,14 @@ angular.module('Shop').controller('loginCtrl', function($scope, $http) {
 				localStorage.setItem('token',res.data.token);
 				$scope.token = res.data.token;
 				console.log($scope.token);
+				getPanier();
+				$state.go('panier');
 			})
 		}
 	}
 
 	function getPanier() {
-		$http.get('/getPanier/'+ $scope.token).then(function(res){
+		$http.get('http://localhost:3000/getPanier/'+ $scope.token).then(function(res){
 			$scope.panier = res.data;
 			console.log($scope.panier);
 		})
