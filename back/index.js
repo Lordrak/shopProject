@@ -31,8 +31,17 @@ app.post('/addProduct', function(req, res) { // on utilise ici express avec app
 			prix : produit.prix,
 			type : produit.type
 		};
-		db.collection('Produit').save(newProduct); 
-		res.status(200).send('Produit ajouté');
+		db.collection('Produit').find({nom : newProduct.nom}).toArray(function(err, docs){
+			if(docs[0]){
+				res.send("Le produit "+newProduct.nom+" existe déja");
+			}
+			else{
+				db.collection('Produit').save(newProduct); 
+				res.status(200).send('Produit ajouté');
+			}
+		})
+		
+		
 	} 	
 	else {
 		res.status(412).send('il manque le nom ou le prix du produit'); //sinon voila
