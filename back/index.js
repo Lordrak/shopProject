@@ -156,7 +156,8 @@ app.post('/addPanier/:token', function(req, res){
    														"password" : docs[0].password,
    														"nom" : docs[0].nom,
    														"prenom" : docs[0].prenom, 
-   														"panier":panier
+   														"panier":panier,
+   														"achats": docs[0].achats
    													},
    													{ upsert: true } );
 					res.status(200).send(produit+" ajouté au panier");
@@ -172,6 +173,7 @@ app.post('/addPanier/:token', function(req, res){
  app.delete('/deletePanier/:token', function(req, res){
  	var token = req.params.token;
  	var produit = req.body;
+ 	console.log(req.body);
  	var db = _client.db('Shop');
  	db.collection('Token').find({token : token}).toArray(function(err, docs){
  		if(docs[0]){
@@ -182,13 +184,15 @@ app.post('/addPanier/:token', function(req, res){
  					var newPanier = panier.filter(function(element){
  						return element.nom != produit.nom;
  					});
+ 					
  					db.collection('Utilisateur').update( { "username": username},
    													{
    														"username" : docs[0].username,
    														"password" : docs[0].password,
    														"nom" : docs[0].nom,
    														"prenom" : docs[0].prenom, 
-   														"panier":newPanier
+   														"panier":newPanier,
+   														"achats": docs[0].achats
    													},
    													{ upsert: true } );
 					res.status(200).send("produit supprimé au panier");
@@ -205,9 +209,11 @@ app.post('/addPanier/:token', function(req, res){
  		if(docs[0]){
  			var username = docs[0].username;
  			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
- 				if(docs[0]){
+ 				if(docs[0].achats[0]){
  					var panier = docs[0].panier;
- 					docs[0].achats.concat(panier);
+ 					var achats = docs[0].achats;
+ 					console.log(panier,achats)
+ 					 var newAchats = achats.concat(panier);
  					db.collection('Utilisateur').update( { "username": username},
    													{
    														"username" : docs[0].username,
@@ -215,15 +221,39 @@ app.post('/addPanier/:token', function(req, res){
    														"nom" : docs[0].nom,
    														"prenom" : docs[0].prenom, 
    														"panier":[],
-   														"achats": docs[0].achats
+   														"achats": newAchats
    													},
    													{ upsert: true } );
 					res.status(200).send("produits achetés");
+ 				}
+ 				else{
+ 					res.send("pas de produit dans le panier");
  				}
  			})
  		}
  	});
  });
+
+ app.get('/getAchat/:token', function(req ,res){
+	var token = req.params.token;
+	var db = _client.db('Shop');
+	db.collection('Token').find({token : token}).toArray(function(err, docs){
+		if(docs[0]){
+			var username = docs[0].username;
+			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
+				if(docs[0].achats[0]){
+					res.status(200).send(docs[0].achats);
+				}
+				else{
+					res.send("le username n'existe pas");
+				}
+			})
+		}
+		else{
+			res.send("pas autorisé");
+		}
+	});
+})
 
 app.listen(3000, function() {
 	console.log('Server ON');

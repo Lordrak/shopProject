@@ -1,6 +1,19 @@
+<center><h1>Panier</h1></center>
 <div ng-repeat="element in panier"><center>
-test
-      <p>{{element}}</p>
+
+      <p>{{element}}  <button ng-click="deleteProduitPanier(element)"> supprimer</button></p>
+
+
+
+
+
+</center>
+</div>
+<button ng-click="achats()">acheté les produits</button>
+<center><h1>Produits achetés</h1></center>
+<div ng-repeat="element in achat"><center>
+
+      <p>{{element}} </p>
 
 
 
