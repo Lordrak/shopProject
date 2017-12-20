@@ -170,10 +170,9 @@ app.post('/addPanier/:token', function(req, res){
 	});
 });
 
- app.delete('/deletePanier/:token', function(req, res){
+ app.delete('/deletePanier/:nomProduit/:token', function(req, res){
  	var token = req.params.token;
- 	var produit = req.body;
- 	console.log(req.body);
+ 	var nomProduit = req.params.nomProduit;
  	var db = _client.db('Shop');
  	db.collection('Token').find({token : token}).toArray(function(err, docs){
  		if(docs[0]){
@@ -182,7 +181,7 @@ app.post('/addPanier/:token', function(req, res){
  				if(docs[0]){
  					var panier = docs[0].panier;
  					var newPanier = panier.filter(function(element){
- 						return element.nom != produit.nom;
+ 						return element.nom != nomProduit;
  					});
  					
  					db.collection('Utilisateur').update( { "username": username},

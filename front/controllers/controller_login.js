@@ -32,16 +32,18 @@ angular.module('Shop').controller('loginCtrl', function($scope, $http,$state) {
 	}
 
 	function deleteProduitPanier(element){
-		console.log(element);
-		var produit = element;
-		$http.delete('http://localhost:3000/deletePanier/'+localStorage.getItem('token'), produit).then(function(res) {
+		console.log(element.nom);
+		$http.delete('http://localhost:3000/deletePanier/'+element.nom+'/'+localStorage.getItem('token')).then(function(res) {
 			console.log(res.data);
-		})
+			getPanier();
+		});
 	}
 
 	function achats(){
 		$http.put('http://localhost:3000/achatProduit/'+localStorage.getItem('token')).then(function(res) {
 			console.log(res.data);
+			getAchat();
+			getPanier();
 		})
 	}
 
