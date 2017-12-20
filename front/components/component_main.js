@@ -12,7 +12,8 @@ angular.module('Shop').config(function($stateProvider){
 
 		name: 'createCompte',
 		url: '/createCompte',
-		templateUrl: 'views/view_creationCompte.html'
+		templateUrl: 'views/view_creationCompte.html',
+		controller: 'userCtrl'
 	};
 
 	var produit = {

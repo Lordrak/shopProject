@@ -2,6 +2,7 @@ angular.module('Shop').controller('mainCtrl', function($scope, $http){
 	$scope.ajoutProduit = ajoutProduit;
         $scope.produits = [];
 
+
         displayProduit();
         
 
