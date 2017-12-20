@@ -27,21 +27,19 @@ app.post('/addProduct', function(req, res) { // on utilise ici express avec app
 	var db = _client.db('Shop'); // 
 	if (produit.prix && produit.nom) { // SI ça existe DONC fais le
 		var newProduct = {
-			nom : produit.nom,
+			nom : produit.nom.toUpperCase(),
 			prix : produit.prix,
 			type : produit.type
 		};
-		db.collection('Produit').find({nom : newProduct.nom}).toArray(function(err, docs){
+		db.collection('Produit').find({nom : newProduct.nom.toUpperCase()}).toArray(function(err, docs){
 			if(docs[0]){
-				res.send("Le produit "+newProduct.nom+" existe déja");
+				res.send("Le produit "+newProduct.nom.toUpperCase()+" existe déja");
 			}
 			else{
 				db.collection('Produit').save(newProduct); 
 				res.status(200).send('Produit ajouté');
 			}
-		})
-		
-		
+		})	
 	} 	
 	else {
 		res.status(412).send('il manque le nom ou le prix du produit'); //sinon voila
@@ -107,6 +105,27 @@ app.post('/login', function (req, res) {
 	}
 });
 
+
+app.get('/getPanier/:token', function(res){
+	var token = req.params.token;
+	var db = _client.db('Shop');
+	db.collection('Token').find({token : token}).toArray(function(err, docs){
+		if(docs[0]){
+			var username = docs[0].username;
+			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
+				if(docs[0]){
+					res.status(200).send(docs[0].panier);
+				}
+				else{
+					res.send("le username n'existe pas");
+				}
+			})
+		}
+		else{
+			res.send("pas autorisé");
+		}
+	});
+})
 
 app.post('/addPanier/:token', function(req, res){
 	var token = req.params.token;
