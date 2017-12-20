@@ -78,7 +78,7 @@ app.post('/login', function (req, res) {
 	var db = _client.db('Shop');
 	if (user.username && user.password) {
 		db.collection('Utilisateur').find({	$and: [ { username: user.username }, { password: user.password }]}).toArray(function (err, docs){
-			if (docs) { // si il existe
+			if (docs[0]) { // si il existe
 				db.collection('Token').find({username: user.username}).toArray(function(err, docs){
 					var token = "";
 					if(docs[0]){
