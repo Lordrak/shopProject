@@ -83,7 +83,7 @@ app.post('/login', function (req, res) {
 					var token = "";
 					if(docs[0]){
 						token = docs[0].token;	
-						res.status(200).send(token+" Connecté");
+						res.status(200).send({token : token,message :" Connecté"});
 					}
 					else{
 						token = {
