@@ -106,7 +106,7 @@ app.post('/login', function (req, res) {
 });
 
 
-app.get('/getPanier/:token', function(res){
+app.get('/getPanier/:token', function(req ,res){
 	var token = req.params.token;
 	var db = _client.db('Shop');
 	db.collection('Token').find({token : token}).toArray(function(err, docs){
