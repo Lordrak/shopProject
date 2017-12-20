@@ -9,8 +9,8 @@ angular.module('Shop').controller('loginCtrl', function($scope, $http) {
 			}
 
 			$http.post('http://localhost:3000/login', connect).then(function(res) {
-				localStorage.setItem('token',res.data);
-				$scope.token = res.data;
+				localStorage.setItem('token',res.data.token);
+				$scope.token = res.data.token;
 				console.log($scope.token);
 			})
 		}
