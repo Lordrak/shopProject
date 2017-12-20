@@ -99,7 +99,7 @@ app.post('/login', function (req, res) {
 
 
 app.post('/addPanier/:token', function(req, res){
-	var token = req.params.token
+	var token = req.params.token;
 	var produit = req.body;
 	var db = _client.db('Shop');
 	db.collection('Token').find({token : token}).toArray(function(err, docs){
@@ -108,7 +108,21 @@ app.post('/addPanier/:token', function(req, res){
 			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
 				if(docs[0]){
 					var panier = docs[0].panier;
-					panier.push(produit);
+					var elem = panier.find(function(element){
+						return produit.nom == element.nom;
+					});
+					if(elem){
+						
+						produit.quantite = parseInt(produit.quantite);
+						elem.quantite = parseInt(elem.quantite);
+						produit.quantite += elem.quantite;
+						var index = panier.indexOf(elem);
+						panier[index] = produit;
+					}
+					else{
+						panier.push(produit);
+					}
+					
 					db.collection('Utilisateur').update( { "username": username},
    													{
    														"username" : docs[0].username,
@@ -127,6 +141,21 @@ app.post('/addPanier/:token', function(req, res){
 		}
 	});
 });
+
+// app.post('/updatePanier/:token', function(req, res){
+// 	var token = req.params.token;
+// 	var produit = req.body;
+// 	var db = _client.db('Shop');
+// 	db.collection('Token').find({token : token}).toArray(function(err, docs){
+// 		if(docs[0]){
+// 			var username = docs[0].username;
+// 			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
+
+// 			})
+// 		}
+// 	});
+
+// })
 
 app.listen(3000, function() {
 	console.log('Server ON');
