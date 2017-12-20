@@ -1,1 +1,1 @@
-angular.module('Shop',[]);
+angular.module('Shop',['ui.router']);
