@@ -27,7 +27,8 @@ angular.module('Shop').config(function($stateProvider){
 
 		name: 'login',
 		url: '/login',
-		templateUrl: 'views/view_login.html'
+		templateUrl: 'views/view_login.html',
+		controller: 'loginCtrl'
 	}
 
 	$stateProvider.state(createCompte);

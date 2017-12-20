@@ -2,6 +2,7 @@ angular.module('Shop').controller('produitCtrl',function($scope,$http){
     
     	$scope.ajoutProduit = ajoutProduit;
         $scope.produits = [];
+        $scope.addProduitPanier = addProduitPanier;
 
         displayProduit();
         
@@ -28,10 +29,14 @@ angular.module('Shop').controller('produitCtrl',function($scope,$http){
 
               	  
               });
+        }
 
-
-    	}
-    	   
+        function addProduitPanier(element) {
+            console.log("element,localStorage.getItem('token') ")
+             $http.post('http://localhost:3000/addPanier/'+localStorage.getItem('token'),element).then(function(res){
+                console.log(res.data);
+             }) 
+        }
     	
     	
 
