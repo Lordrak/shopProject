@@ -55,7 +55,8 @@ app.post('/createUser', function(req, res) {
 			password : user.password,
 			nom : user.nom,
 			prenom : user.prenom,
-			panier : []
+			panier : [],
+			achats : []
 		};
 		db.collection('Utilisateur').save(newUser);
 		res.status(200).send('Utilisateur crée');
@@ -111,8 +112,7 @@ app.post('/addPanier/:token', function(req, res){
 					var elem = panier.find(function(element){
 						return produit.nom == element.nom;
 					});
-					if(elem){
-						
+					if(elem){	
 						produit.quantite = parseInt(produit.quantite);
 						elem.quantite = parseInt(elem.quantite);
 						produit.quantite += elem.quantite;
@@ -122,7 +122,6 @@ app.post('/addPanier/:token', function(req, res){
 					else{
 						panier.push(produit);
 					}
-					
 					db.collection('Utilisateur').update( { "username": username},
    													{
    														"username" : docs[0].username,
@@ -142,20 +141,60 @@ app.post('/addPanier/:token', function(req, res){
 	});
 });
 
-// app.post('/updatePanier/:token', function(req, res){
-// 	var token = req.params.token;
-// 	var produit = req.body;
-// 	var db = _client.db('Shop');
-// 	db.collection('Token').find({token : token}).toArray(function(err, docs){
-// 		if(docs[0]){
-// 			var username = docs[0].username;
-// 			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
+ app.delete('/deletePanier/:token', function(req, res){
+ 	var token = req.params.token;
+ 	var produit = req.body;
+ 	var db = _client.db('Shop');
+ 	db.collection('Token').find({token : token}).toArray(function(err, docs){
+ 		if(docs[0]){
+ 			var username = docs[0].username;
+ 			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
+ 				if(docs[0]){
+ 					var panier = docs[0].panier;
+ 					var newPanier = panier.filter(function(element){
+ 						return element.nom != produit.nom;
+ 					});
+ 					db.collection('Utilisateur').update( { "username": username},
+   													{
+   														"username" : docs[0].username,
+   														"password" : docs[0].password,
+   														"nom" : docs[0].nom,
+   														"prenom" : docs[0].prenom, 
+   														"panier":newPanier
+   													},
+   													{ upsert: true } );
+					res.status(200).send("produit supprimé au panier");
+ 				}
+ 			})
+ 		}
+ 	});
+ });
 
-// 			})
-// 		}
-// 	});
-
-// })
+ app.put('/achatProduit/:token', function(req, res){
+ 	var token = req.params.token;
+ 	var db = _client.db('Shop');
+ 	db.collection('Token').find({token : token}).toArray(function(err, docs){
+ 		if(docs[0]){
+ 			var username = docs[0].username;
+ 			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
+ 				if(docs[0]){
+ 					var panier = docs[0].panier;
+ 					db.collection('Utilisateur').update( { "username": username},
+   													{
+   														"username" : docs[0].username,
+   														"password" : docs[0].password,
+   														"nom" : docs[0].nom,
+   														"prenom" : docs[0].prenom, 
+   														"panier":[],
+   														"achats": panier
+   													},
+   													{ upsert: true } );
+					res.status(200).send("produits achetés");
+ 				}
+ 			})
+ 		}
+ 	});
+ });
 
 app.listen(3000, function() {
 	console.log('Server ON');
