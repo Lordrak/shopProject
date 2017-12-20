@@ -1,6 +1,9 @@
 angular.module('Shop').controller('loginCtrl', function($scope, $http,$state) {
 	$scope.panier = [];
 	$scope.token = "";
+	if($state.includes('panier')){
+			getPanier();
+	}
 	$scope.connect = function() {
 		if (this.username && this.password) {
 			var connect = {
@@ -12,14 +15,13 @@ angular.module('Shop').controller('loginCtrl', function($scope, $http,$state) {
 				localStorage.setItem('token',res.data.token);
 				$scope.token = res.data.token;
 				console.log($scope.token);
-				getPanier();
 				$state.go('panier');
 			})
 		}
 	}
 
 	function getPanier() {
-		$http.get('http://localhost:3000/getPanier/'+ $scope.token).then(function(res){
+		$http.get('http://localhost:3000/getPanier/'+ localStorage.getItem('token')).then(function(res){
 			$scope.panier = res.data;
 			console.log($scope.panier);
 		})

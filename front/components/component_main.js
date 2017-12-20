@@ -37,7 +37,7 @@ angular.module('Shop').config(function($stateProvider){
 		url:'/panier',
 		templateUrl:'views/view_panier.html',
 		controller: 'loginCtrl'
-	}
+	};
 
 
 	$stateProvider.state(createCompte);
