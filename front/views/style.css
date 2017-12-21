@@ -5,6 +5,30 @@ background-image: url('chicken-leg.svg');
 background-image: url('chicken-head.png');
 background-repeat: repeat;
 background-size: 260px;
-color: #FFFF33;
+color: #FFD700;
 
 };
+
+a {
+	color: #FFD700
+	;
+}
+
+
+a:visited {
+ 	text-decoration: none; color:#FFD700; 
+ }
+
+button {
+	display: inline-block;
+	padding: 15px 25px;
+	font-size: 12px;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	outline: none;
+	background-color: white;
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0 9px #999;
+}

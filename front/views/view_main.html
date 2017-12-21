@@ -7,11 +7,11 @@
 	<div ng-if="token == null">
 		<a ui-sref="createCompte">Créé son compte</a>
 		<a ui-sref="login">Page de login</a>
-	</div>
+	
 	<a ui-sref="panier">Panier</a>
-	<div ng-if="token != null"> <button ng-click="disconnect()">deconnexion</button></div>
-	<a ui-sref="produit"> Affiche les produits</a>
-
+	<div ng-if="token != null"> <button ng-click="disconnect()">deconnexion  </button></div>
+	<a ui-sref="produit"> Affiche les produits  </a>
+	</div>
  
    <ui-view></ui-view>
 </center>
