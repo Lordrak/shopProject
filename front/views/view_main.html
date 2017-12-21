@@ -2,9 +2,12 @@
 
 <div><center>
 
-	<a ui-sref="createCompte">Créé son compte</a>
 	
-	<div ng-if="token == null"><a ui-sref="login">Page de login</a></div>
+	<div ng-if="token.includes('admin')"><a ui-sref="addProduit"> Ajouter un produit</a></div>
+	<div ng-if="token == null">
+		<a ui-sref="createCompte">Créé son compte</a>
+		<a ui-sref="login">Page de login</a>
+	</div>
 	<div ng-if="token != null"><a ui-sref="panier">Panier</a></div>
 	<a ui-sref="produit"> Affiche les produits</a>
  

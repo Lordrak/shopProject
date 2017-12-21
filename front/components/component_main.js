@@ -39,9 +39,18 @@ angular.module('Shop').config(function($stateProvider){
 		controller: 'loginCtrl'
 	};
 
+	var addProduit = {
+
+		name: 'addProduit',
+		url: '/addProduit',
+		templateUrl: 'views/view_addProduit.html',
+		controller : 'produitCtrl'
+	};
+
 
 	$stateProvider.state(createCompte);
 	$stateProvider.state(produit);
+	$stateProvider.state(addProduit);
 	$stateProvider.state(login);
 	$stateProvider.state(panier);
 
