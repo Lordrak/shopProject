@@ -1,0 +1,10 @@
+body {
+background-color: #DD4132;
+font-family: 'Shrikhand', cursive;
+background-image: url('chicken-leg.svg');
+background-image: url('chicken-head.png');
+background-repeat: repeat;
+background-size: 260px;
+color: #FFFF33;
+
+};
