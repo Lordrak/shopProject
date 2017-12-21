@@ -4,6 +4,7 @@ angular.module('Shop').controller('loginCtrl', function($scope, $http,$state) {
 	$scope.token = "";
 	$scope.deleteProduitPanier = deleteProduitPanier;
 	$scope.achats = achats;
+	$scope.message = "";
 
 
 	if($state.includes('panier')){
@@ -19,9 +20,16 @@ angular.module('Shop').controller('loginCtrl', function($scope, $http,$state) {
 			}
 
 			$http.post('http://localhost:3000/login', connect).then(function(res) {
-				localStorage.setItem('token',res.data.token);
+				
 				$scope.token = res.data.token;
-				$state.go('panier');
+				if($scope.token){
+					$state.go('panier');
+					localStorage.setItem('token',res.data.token);
+				}
+				else{
+					$scope.message = res.data;
+				}
+				
 			})
 		}
 	}

@@ -1,5 +1,6 @@
 <center><h1>Panier</h1></center>
-<div ng-repeat="element in panier"><center>
+<div ng-if="panier.length >0">
+	<div ng-repeat="element in panier track by $id"><center>
 
       <p>{{element}}  <button ng-click="deleteProduitPanier(element)"> supprimer</button></p>
 
@@ -7,17 +8,21 @@
 
 
 
-</center>
+	</center>
+	</div>
 </div>
+
 <button ng-click="achats()">acheté les produits</button>
 <center><h1>Produits achetés</h1></center>
-<div ng-repeat="element in achat"><center>
+<div ng-if="achat.length > 0">
+	<div ng-repeat="element in achat track by $id"><center>
 
-      <p>{{element}} </p>
-
-
-
+	      <p>{{element}} </p>
 
 
-</center>
+
+
+
+	</center>
+	</div>
 </div>
