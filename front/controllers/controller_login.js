@@ -5,6 +5,7 @@ angular.module('Shop').controller('loginCtrl', function($scope, $http,$state) {
 	$scope.deleteProduitPanier = deleteProduitPanier;
 	$scope.achats = achats;
 
+
 	if($state.includes('panier')){
 			getPanier();
 			getAchat();
@@ -26,6 +27,9 @@ angular.module('Shop').controller('loginCtrl', function($scope, $http,$state) {
 	}
 
 	function getPanier() {
+		if(localStorage.getItem('panier')){
+			$scope.panier = JSON.parse(localStorage.getItem('panier'));
+		}
 		$http.get('http://localhost:3000/getPanier/'+ localStorage.getItem('token')).then(function(res){
 			$scope.panier = res.data;
 		})

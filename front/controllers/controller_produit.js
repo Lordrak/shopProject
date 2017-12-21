@@ -2,6 +2,8 @@ angular.module('Shop').controller('produitCtrl',function($scope,$http){
     
     	$scope.ajoutProduit = ajoutProduit;
         $scope.produits = [];
+        $scope.panier = [];
+
         
 
         displayProduit();
@@ -31,8 +33,15 @@ angular.module('Shop').controller('produitCtrl',function($scope,$http){
               });
         }
 $scope.addProduitPanier =  function (element) {
-            console.log("element,localStorage.getItem('token') ");
+            var panier = [];
             element.quantite = this.quantite;
+            if(localStorage.getItem('panier')){
+              $scope.panier = localStorage.getItem('panier');
+            }
+            panier =  JSON.parse($scope.panier);
+            console.log(panier);
+            panier.push(element);
+            localStorage.setItem('panier', JSON.stringify(panier));
              $http.post('http://localhost:3000/addPanier/'+localStorage.getItem('token'),element).then(function(res){
                 console.log(res.data);
              }) 
