@@ -76,9 +76,12 @@ app.post('/createUser', function(req, res) {
 app.post('/login', function (req, res) {
 	var user = req.body;
 	var db = _client.db('Shop');
+
 	if (user.username && user.password) {
 		db.collection('Utilisateur').find({	$and: [ { username: user.username }, { password: user.password }]}).toArray(function (err, docs){
+
 			if (docs[0]) { // si il existe
+				console.log(docs[0]);
 				db.collection('Token').find({username: user.username}).toArray(function(err, docs){
 					var token = "";
 					if(docs[0]){
@@ -208,7 +211,7 @@ app.post('/addPanier/:token', function(req, res){
  		if(docs[0]){
  			var username = docs[0].username;
  			db.collection('Utilisateur').find({username: username}).toArray(function(err, docs){
- 				if(docs[0].achats[0]){
+ 				if(docs[0].panier[0]){
  					var panier = docs[0].panier;
  					var achats = docs[0].achats;
  					console.log(panier,achats)

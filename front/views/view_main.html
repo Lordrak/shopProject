@@ -8,8 +8,9 @@
 		<a ui-sref="createCompte">Créé son compte</a>
 		<a ui-sref="login">Page de login</a>
 	</div>
-	<div ng-if="token != null"><a ui-sref="panier">Panier</a></div>
+	<div ng-if="token != null"><a ui-sref="panier">Panier</a> <button ng-click="disconnect()">deconnexion</button></div>
 	<a ui-sref="produit"> Affiche les produits</a>
+
  
    <ui-view></ui-view>
 </center>
